@@ -30,7 +30,7 @@ class Lexer {
     return this._index > this._json.length
   }
   _walk() {
-    return this._json[this._index ++]
+    this._index += 1
   }
   _currentChar() {
     return this._json[this._index]
@@ -41,9 +41,11 @@ class Lexer {
   _readString() {
     let tmp = ''
     while (!this._isEnd()) {
-      const c = this._walk()
+      const c = this._currentChar()
+      const next = this._nextChar()
+      this._walk()
       if (c == '"') break
-      if (c == '\\' && this._nextChar() == '"') {
+      if (c == '\\' && next == '"') {
         this._walk()
         tmp += '"'
         continue
@@ -79,7 +81,8 @@ class Lexer {
     return tmp
   }
   nextToken() {
-    const c = this._walk()
+    const c = this._currentChar()
+    this._walk()
     if (this._isEnd()) return new Token(TokenTypes.EOF)
     switch (c) {
       case ' ':
@@ -127,7 +130,6 @@ class Parser {
   _matchToken(type) {
     const string = this._token.string
     if (!this._isToken(type)) {
-      console.log(this._token, type)
       throw new Error(`expect ${type} actual ${this._token.type}`)
     }
     this._walk()
@@ -202,4 +204,4 @@ class Parser {
   }
 }
 
-module.exports = Parser
+module.exports = Parser 

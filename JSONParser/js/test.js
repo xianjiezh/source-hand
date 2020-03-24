@@ -14,12 +14,16 @@ test('should parse one level array', () => {
   expect(JSON.stringify(result)).toBe(json1)
 })
 
-test('should parse completed object', () => {
+test('should parse complex object', () => {
   const obj = {
-    a: [1, 23, 'nnn', {a: 1, b: null, v: [123, null, '123123']}],
-    b: ['123123', 'ok']
+    a: [1, 23, 'nnn,,,', {a: 1, b: null, v: [123, null, {a: 'aa1231"23sdf'}]}],
+    b: ['123123', 'ok'],
+    c: '}[][]"',
+    d: 'null',
+    e: 'false'
   }
   const json1 = JSON.stringify(obj)
+  console.log('json1', json1)
   const result = new Parser(json1).parse()
   expect(JSON.stringify(result)).toBe(json1)
 })
